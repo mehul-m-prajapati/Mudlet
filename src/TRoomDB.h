@@ -49,6 +49,7 @@ class TRoomDB
 
 public:
     explicit TRoomDB(TMap*);
+    ~TRoomDB();
 
     TRoom* getRoom(int id);
     TArea* getArea(int id);
@@ -103,6 +104,7 @@ public:
 private:
     TRoomDB() = default;
 
+    bool isDestroying;
     int createNewAreaID();
     bool __removeRoom(int id);
     void setAreaRooms(int, const QSet<int>&); // Used by XMLImport to fix rooms data after import

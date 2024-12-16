@@ -44,7 +44,15 @@ TRoomDB::TRoomDB(TMap* pMap)
     // Ensure the default area is created, the area/areaName items that get
     // created here will get blown away when a map is loaded but that is expected...
     addArea(-1, mpMap->getDefaultAreaName());
+
+    isDestroying = false;
 }
+
+TRoomDB::~TRoomDB()
+{
+    isDestroying = true;
+}
+
 
 TRoom* TRoomDB::getRoom(int id)
 {
@@ -177,6 +185,9 @@ void TRoomDB::updateEntranceMap(TRoom* pR, bool isMapLoading)
 // this is call by TRoom destructor only
 bool TRoomDB::__removeRoom(int id)
 {
+    if (isDestroying)
+        return true;
+
     static QMultiHash<int, int> _entranceMap; // Make it persistent - for multiple room deletions
     static bool isBulkDelete = false;
     // Gets set / reset by mpTempRoomDeletionSet being non-null, used to setup
